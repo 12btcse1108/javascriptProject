@@ -1,0 +1,34 @@
+body {
+    background-color: #E1C1BA;
+}
+
+.bar1 {
+    fill: green;
+}
+
+.legend,
+{
+    font-family: 'Patrick Hand', cursive;
+}
+
+h1 {
+    font-family: 'Economica', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: #0047b3;
+}
+
+.axis {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 15px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+}
+
+.bar:hover {
+    fill: grey;
+}

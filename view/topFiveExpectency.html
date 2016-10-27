@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <link rel="stylesheet" href="./css/top_five_expectency.css">
+    
+</head>
+
+<body>
+
+    <h1>Total Expectency of Asian Countries (1960-2015) </h1>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script>
+        // set the dimensions of the canvas
+        var margin = {
+                top: 90,
+                right: 80,
+                bottom: 40,
+                left: 260
+            },
+            width = 1000 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+
+        // set the ranges
+        var x = d3.scale.ordinal().rangeRoundBands([0, width], .6);
+        var y = d3.scale.linear().range([height, 0]);
+
+        // define the axis
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(10);
+
+
+        // add the SVG element
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+
+        // load the data
+        d3.json("../json/jsonbar.json", function(error, data) {
+
+            data.forEach(function(d) {
+                d["countryCode"] = d["countryCode"];
+                d["Total_Expectency"] = +d["Total_Expectency"];
+            });
+
+            //sort the data
+            data.sort(function(a, b) {
+                return b["Total_Expectency"] - a["Total_Expectency"];
+            });
+            //slice the data
+            data = data.slice(0, 5);
+            // scale the range of the data
+            x.domain(data.map(function(d) {
+                return d["countryCode"];
+            }));
+            y.domain([0, d3.max(data, function(d) {
+                return d["Total_Expectency"];
+            })]);
+
+            // add axis
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", "-.5em")
+                .attr("transform", "rotate(-50)");
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 5)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Total-Expectency");
+            //label the bars
+            svg.selectAll('text')
+                .data(data)
+                .enter()
+                .append('text')
+                .text(function(d) {
+                    return d.Total_Expectency;
+                })
+                .attr('x', function(d) {
+                    return xScale(d.countryCode);
+                })
+                .attr('y', function(d) {
+                    return yScale(d.Total_Expectency);
+                })
+                .style("fill", "black")
+                .style("text-anchor", "middle");
+
+            // Add bar chart
+            svg.selectAll("bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d) {
+                    return x(d["countryCode"]);
+                })
+                .attr("width", x.rangeBand())
+                .attr("y", function(d) {
+                    return y(d["Total_Expectency"]);
+                })
+                .attr("height", function(d) {
+                    return height - y(d["Total_Expectency"]);
+                });
+
+        });
+    </script>
+
+    <br>
+
+
+</body>
+
+</html>

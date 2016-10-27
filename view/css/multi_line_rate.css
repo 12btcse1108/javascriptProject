@@ -1,0 +1,34 @@
+body {
+    font: 10px sans-serif;
+    background-color: #E1C1BA;
+}
+
+h1 {
+    font-family: 'Economica', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: #0047b3;
+}
+
+.x.axis path {
+    display: block;
+}
+
+.line {
+    fill: none;
+    stroke-width: 3.5px;
+}
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 2;
+    shape-rendering: crispEdges;
+}
